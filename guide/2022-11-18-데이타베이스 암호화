@@ -1,0 +1,40 @@
+
+1. 교육 목표
+ 
+기존 user-service의 application.yml 파일의 내용중
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
+    username: cos
+    password: cos1234
+    
+    영역을 Config-server의 user-service.yml로 옮기고 별도 관리한다.    
+   다음은 cos1234 의 패스워드를 암호화 시켜서 저장시키는 작업을 해보자  
+
+  9d46fdcaacf93782eb111fe2e05282658a40f0bd03b07c732a556b2d62425a92
+  
+2. 과정
+   2.1 user-service-application.yml 파일의 drive 영역 삭제
+   2.2 user-service.yml에 다음의 내용을 저장한다.
+  # [2022-11-17] 데이타베이스 암호영역으로 config-server를 통해서 인젝션 받는다.
+# 위치는 config-server의 환경정보를 저장하는 native영역이다. 2022-11-17-spring-cloud-config-native-repository
+# 막고 옮긴다.
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
+    username: cos
+    password: cos1234 
+    
+  2.3 user-service-bootstap.yml
+  spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: user-service
+      
+     에서 name를 변경한다.      
+  
+   
+    
+    

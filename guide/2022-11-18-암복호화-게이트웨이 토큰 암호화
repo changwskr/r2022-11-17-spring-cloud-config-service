@@ -1,0 +1,25 @@
+
+apigateway - bootstrap.yml [ config-server를통한 ecommerce.yml 을 사용]
+
+--> bootstap.yml
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: ecommerce
+-->
+ecommerce.yml의 토큰은 user_token_native_ecommerce를 사용한다.
+이것을 비대칭키 암호화를 실시해서 저장해 보자
+
+token:
+  expiration_time: 86400000
+  secret: user_token_native_ecommerce     
+
+(post)http://localhost:8888/encrypt
+  user_token_native_ecommerce
+  AQA2UDLKLRGLI7E8xaHogrZMgKRjg/RN0KNq9IYhBe2UsfWCQ7jSVaysPzSJarE8Qb9I03aiT2UNatUhzrnV69V6M0SnHenX+p5iCUGtttw1rMtXE+xa+SWdi39hcjW69m9VpELV13I/3UylHq2XKuoYYPlAxCd4wlFl3kVvTHgeRcHAh/1gNrEl92NVIDGXBFd4yapq+CX7pJeIM95gUYLg6hr3rF9g7ZzIoOvjUHd6cqYpQFJuhEhjO+PDD21cTtli0Rc2SJTJlkOyIvdLQkjjkos8csd+WoZwh18hZJmv3Ddysm9rGAr8xWMjhkz3mh1Fvv3/cWlOrUFEGZkL/ZIvi+gHLJb7QJl9TwCzuqh5jGX0P5HwX++OAB901Ql9OUFvNgURprc3py1nsU/oHmYK
+  
+  http://localhost:8888/ecommerce/default 을통해서 확인한다.
+     
+      
+      

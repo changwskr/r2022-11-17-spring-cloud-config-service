@@ -1,0 +1,14 @@
+Section 9. Encryption and Decryption
+--------------------------------
+대칭키 암호화 테스트하는 과정
+
+1. Config Server의 Dependencies
+2. bootstrap.yml
+	encrypt:
+	  key: abcdefghijklmnopqrstuvwxyz0123456789
+3. 호출
+    (post)http://localhost:8888/encrypt
+              body에 문자열 삽입
+    
+    http://localhost:8888/decrypt
+    

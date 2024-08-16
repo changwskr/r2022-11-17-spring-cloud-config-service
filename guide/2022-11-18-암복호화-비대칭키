@@ -1,0 +1,37 @@
+
+1. public, private key를 생성
+   JDK Keytool 이용
+2. 키저장 디렉토리 생성
+    keystore - C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-repository\keystore
+
+1. Public, Private Key 생성 à JDK keytool 이용
+2. mkdir C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-repository\keystore
+3. keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+-dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+-keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+
+###########################################################################
+# 개인키/공개키 생성 방법
+###########################################################################
+1) 개인키생성
+keytool -genkeypair -alias apiEncryptionKey -keyalg RSA -dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" -keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+생성된 apiEncryptionKey.jks 파일을 이용해서 복호화를 하면 된다.
+
+2) 개인키생성 정보 확인
+keytool -list -keystore apiEncryptionKey.jks -v
+
+3) 개인키를 이용해서 공개키 생성 방법=> 인증서 생성
+keytool -export -alias apiEncryptionKey -keystore apiEncryptionKey.jks -rfc -file trustServer.cer
+
+4) 인증서 파일을 jks 파일로 변환해서 사용가능
+keytool -import -alias trustServer -file trustServer.cer -keystore  publicKey.jks
+keytool -list -keystore publicKey.jks -v
+
+---> 우리는 인증서를 발급받으면 서버로 올린다.
+
+(post)http://localhost:8888/encrypt
+           body에 문자열 삽입
+    
+ http://localhost:8888/decrypt
+
+    
