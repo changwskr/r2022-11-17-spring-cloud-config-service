@@ -1,0 +1,26 @@
+
+지금까지 git 연동이 안되었는데 다음과 같이 하니 되었네
+
+
+● 절차
+
+	cd C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-repository>
+	
+	git init
+	git add .
+	git commit -m "aaa"
+	git remote -v
+	git remote add origin https://github.com/changwskr/spring-cloud-config.git
+	git push --set-upstream origin master
+	git push
+	git pull
+
+	---->>> git pull을 한번 한것이 맞지 않았나 하는데
+
+● 테스트
+	http://127.0.0.1:8888/ecommerce/default
+	http://127.0.0.1:8888/ecommerce/prod
+	http://127.0.0.1:8888/ecommerce/dev
+
+	Adding property source: Config resource 'file [C:\Users\chang\AppData\Local\Temp\config-repo-4737454282927213474\ecommerce-dev.yml]' via location 'file:/C:/Users/chang/AppData/Local/Temp/config-repo-4737454282927213474/'
+

@@ -1,0 +1,15 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-native-repository
+        git:
+          uri: https://github.com/changwskr/spring-cloud-config
+          force-pull: true          
+
+

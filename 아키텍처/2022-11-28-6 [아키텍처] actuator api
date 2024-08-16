@@ -1,0 +1,3 @@
+ 
+환경전파
+POST http://localhost:8000/actuator/busrefresh

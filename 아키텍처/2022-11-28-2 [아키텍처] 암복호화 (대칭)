@@ -1,0 +1,70 @@
+
+암복호화 관련해서 사용하는 방식은 대칭키와 비대칭키 방식을 사용한다.
+	- 대칭키의 경우에는 하나의 키를 공유하여 사용하는 방식을 말하며
+	- 비대칭키의 경우에는 공개키와 개인키를 분리해서 사용하는 방식이다.
+
+spring-cloud-framework 는 두가지 방식에 대한 지원을 하며
+주 아키텍처는 config-server를 통해서 진행된다.
+
+일반적으로 비대칭 방식에서는 개인키로 암호화하고 공개키로 복호화 가능하고
+공개키로 암호화 하고 개인키로 복호화가 가능하다.
+	
+● 대칭키 구성
+(학습) spring-cloud-config-server를 통해서 암복호화를 구축한다.
+(config-service)
+	- pom.xml
+		spring-cloud-starter-bootstrap
+	- bootstrap.yml
+		encrypt:
+		# 대칭키를 이용해서 암호화하는 경우
+		  key: abcdefghijklmnopqrstuvwxyz0123456789
+	
+
+● 테스트
+	- POST http://127.0.0.1:8888/encrypt
+		. BODY
+			평문
+	- POST http://127.0.0.1:8888/decrypt
+		. BODY
+			평문			
+ 
+ ● (학습) ecommerce 환경에서 암호를 사용해야 되는 환경에 적용해보자
+ 	- 대상 
+ 		. datasource.password 영역
+ 	- (user-service)
+ 		. application.xml
+ 			. datasource 영역을 삭제하고 이것을 config-service 환경으로 바꾸자
+ 	- 작업
+ 		. user-service
+ 			. application.xml 
+ 				. datasource 영역 삭제
+			. bootstrap.xml
+				. spring.cloud.config.name=user-service 변경
+		. apigateway-service
+			. application.xml
+				.dataource 영역 삭제
+			. bootstrap.xml
+				. spring.cloud.config.name=ecommerce 변경				 
+ 		. config-service
+ 			. 2022-11-17-spring-cloud-config-native-repository
+ 				. user-service.yml 생성 
+ 					. datasource 영역 생성
+ 						. 여기서 패스워드 영역을 http://127.0.0.1:8888/encrypt을 이용해서 암호화 시켜 적용한다.
+ 							 password: '{cipher}491e0c5d9af59a14fec8e09e709348deb944e60c35bd2d298d71d8d762a1ab6f'
+ 							 -----------------
+								spring:
+								  datasource:
+								    driver-class-name: com.mysql.cj.jdbc.Driver
+								    url: jdbc:mysql://mysql:3306/ecommerce_db?serverTimezone=Asia/Seoul
+								    username: ecommerce
+								    password: '{cipher}AQBhbSZvRxzv/bT8t02nnEqj0DzwcW/73JeNWJmSnvvyH+ls14QNnRh/5uqMl4uDb/aNGajPTogpWEe5Cc2fYJQf7piMj6r0ZmJ9pzQuF8AoHScsmj1MK43/Edf3u3677sNSdhV6oyFmPc2Gq0h3SxOFJc+c+s+6Yysd7IOHDzQjU1ueB03PeH0Uav0J8HQrA0bQg6dKSSpwE1AP9WvIeyHqQMc1wF+Qd0k/BXlrTMSao+MmKRRbWzk7ZReswGkZ/+adQ9zkLRTifm4xszCK2W+eFgnkYFONx87c4OjSdUJfwzwIKjDCtdZLG3CFl/R/V6TW+0l4dDGjXInPJMNcfYqnbJbCmN5YJzLqffakGuU7Q/6Lmwx9V1Kjiw2KON33nZA=' 							
+ 							 -----------------
+ 							 http://127.0.0.1:8888/user-service/default 확인한다.
+ 							 
+ 							 
+ 							 
+ 	- 테스트
+ 		. 먼저 user-service가 config-service의 user-service.xml를 참조하는 지 확인
+ 			. http://127.0.0.1:8888/user-service/default
+ 		
+ 

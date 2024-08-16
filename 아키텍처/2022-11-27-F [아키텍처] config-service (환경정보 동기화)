@@ -1,0 +1,55 @@
+● 변경된 환경정보를 어떻게 배포 할 것인가
+	- 방법
+		. 서비스 재기동
+		. Actuator refresh
+		. Spring cloud bus 사용
+
+● 구현방법	
+	- pom.xml
+		spring-boot-starter-actuator
+		spring-boot-config
+		spring-boot-bootstrap
+	- user-service 부분에 Filter 부분 수정
+		WebSecurity.config() {
+	        // 기본 통과
+			http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+		}
+	- application.xml 추가
+		(apigateway)(user-service)
+		management:
+		  endpoints:
+		    web:
+		      exposure:
+		        include: refresh, health, beans, busrefresh, info, metrics, prometheus
+	- bootstrap.yml 추가 
+		(apigateway)(user-service)
+	spring:
+	  cloud:
+	    config:
+	      uri: http://127.0.0.1:8888
+	      name: ecommerce
+			                
+
+● application.xml 수정
+	(apigateway-service)
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+	
+	
+
+● 환경 파일 전파
+	(post)http://localhost:8000/actuator/refresh
+	(post)http://localhost:8000/actuator/busrefresh
+	(post)http://localhost:8000/user-service/actuator/busrefresh
+	
+	http://localhost:8000/user-service/actuator/health
+	http://localhost:8888/ecommerce/default
+	http://localhost:8888/ecommerce/dev
+		

@@ -1,0 +1,35 @@
+
+로컬파일시스템을 기준으로 해서 환경파일을 관리하고자 하는 경우
+
+● 절차
+	(application.xml)
+spring:
+  application:
+    name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest    
+  profiles:
+    active: native
+#    active: git
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/changwskr/spring-cloud-config
+          force-pull: true          
+        native:
+          search-locations: file:///C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-native-repository
+#          uri: file:///C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-native-repository 
+
+	
+● 테스트
+	http://127.0.0.1:8888/user-service/default
+	http://127.0.0.1:8888/ecommerce/default
+	http://127.0.0.1:8888/ecommerce/dev
+	http://127.0.0.1:8888/ecommerce/prod
+	http://127.0.0.1:8888/application/default
+	http://127.0.0.1:8888/user-service/native

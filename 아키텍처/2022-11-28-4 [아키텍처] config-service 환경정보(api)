@@ -1,0 +1,32 @@
+
+- 환경정보
+	- 2022-11-17-spring-cloud-config-native-repository
+		. application.yml
+		. ecommerce.yml
+		. ecommerce-dev.yml
+		. ecommerce-prod.yml
+		. user-service.yml
+		
+- http://127.0.0.1:8888/config-service/default
+	- "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\application.yml",
+
+- http://127.0.0.1:8888/ecommerce/default
+	- "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\ecommerce.yml",
+	-m"name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\application.yml",
+
+- http://127.0.0.1:8888/ecommerce/dev
+	- "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\ecommerce-dev.yml",
+	-  "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\ecommerce.yml",
+	-  "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\application.yml",
+
+- http://127.0.0.1:8888/ecommerce/prod
+	- "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\ecommerce-prod.yml",
+	-  "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\ecommerce.yml",
+	-  "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\application.yml",
+	
+- http://127.0.0.1:8888/user-service/default
+	"name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\user-service.yml",
+	 "name": "file:C:\\WSJ_EX\\01.workspace\\2022-11-17-spring-cloud-config-native-repository\\application.yml",
+	 
+- http://127.0.0.1:8888/encrypt POST
+- http://127.0.0.1:8888/decrypt POST	 

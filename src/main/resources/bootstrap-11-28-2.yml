@@ -1,0 +1,7 @@
+
+encrypt:
+# 대칭키를 이용해서 암호화하는 경우
+  key: abcdefghijklmnopqrstuvwxyz0123456789
+
+
+    

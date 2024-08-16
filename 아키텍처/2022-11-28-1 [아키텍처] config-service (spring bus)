@@ -1,0 +1,94 @@
+
+
+● 약점
+	- actuator refresh
+		는 무수히 많은 msa 환경에는 적합하지 않다.
+	- 그래서
+		이것을 보완하고자 spring cloud bus가 나왔다.		
+
+● 아키텍처
+	- rabbit mq 메시지 브로커를 통해서 broadcast
+	- amqp (advanced message queing protocol)
+	- 런타임
+		특정 msa에서 정보가 변경되면 config-server는 mq를 통해서 변경된 정보를 push 한다. 
+		이렇게 함으로서 각각의 msa는 다시 refresh하지 않아도 변경된 정보를 알수있게 된다.
+			
+● AMOP 를 사용할려면
+	Erlang, RabbitMQ 두개가 필요하다.
+
+● 아키텍처
+
+	MSA -----HTTP POST/busrefresh  ----- config server + cloud Bus
+																	- push msa
+																	- push msa
+    하나의 msa에서 발생된 이벤트를 다른 msa에게로 전달해준다.																							
+    
+● 구현절차
+	(config-server)
+	- pom.xml
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+	(config-server)
+	- pom.xml		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+		
+
+	(application.xml)
+	- Config server, User, Gateway 서비스 추가
+		spring:
+		  rabbitmq:
+		    host: 127.0.0.1
+		    port: 5672
+		    username: guest
+		    password: guest    
+		management:
+		  endpoints:
+		    web:
+		      exposure:
+		        include: health, busrefresh, beans, httptrace, busrefresh <<<<< busrefresh 추가
+
+	(bootstrap.yml)
+	- User-service, Gateway-service
+		중요 (bootstrap.yml)
+		여기서 config-service 명시
+
+		spring:
+		  cloud:
+		    config:
+		      uri: http://127.0.0.1:8888
+		      name: config-service      
+		
+		# 2022-11-28-1 spring-bus 적용으로 사용을 안한다
+		#  profiles:
+		#    active: dev
+		
+					        
+		
+● 테스트
+	- rabbitmq 시작
+	- config 시작
+	- eureka 시작
+	- gateway 시작
+	- user 시작
+	- http://127.0.0.1/user-service/health_check	
+	- user 로그인
+	- user 헬스체크
+	- 토큰정보 변경 -- application.yml -- changed
+	- 토큰정보 변경 확인 http://127.0.0.1:8888/config-service/default
+	- 환경전파 확인 http://127.0.0.1/user-service/health_check (아직 전파전)
+	- 환경전파 실시 http://localhost:8000/user-service/actuator/busrefresh -- 204 반환
+	- user-sevice의 로그 확인
+	- user 헬스체크 - 에러
+	- user 로그인 - 성공 - 토큰 입력
+	- user 헬스체크 - 성공
+	
