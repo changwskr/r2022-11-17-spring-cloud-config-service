@@ -1,10 +1,9 @@
 server:
   port: 8888
-# --------------------------------------------------------------------
+
 spring:
   application:
     name: config-service
-
   cloud:
     config:
       server:
@@ -12,4 +11,7 @@ spring:
           uri: file://C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
         native:
           search-locations: C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
+#          search-locations: C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-native-repository
+#          uri: file://C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-native-repository
+
 
