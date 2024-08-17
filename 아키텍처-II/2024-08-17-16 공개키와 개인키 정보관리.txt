@@ -165,5 +165,21 @@
                 roian
 
 
+[bootstrap의 대칭킹와 비대칭일때 차이]
+    spring-config-service 는 기동시 bootstrap 정보를 통해서 대칭인지 비대칭인지 구분한다.
+
+    bootstrap 정보 (비대칭)
+          key-store:
+            location: file:///C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-repository\keystore\apiEncryptionKey.jks
+            password: 1q2w3e4r
+            alias: apiEncryptionKey
+
+    bootstrap 정보 (대칭)
+        encrypt:
+           key: abcdefghijklmnopqrstuvwxyz0123456789
+
+
+
+
 
 
