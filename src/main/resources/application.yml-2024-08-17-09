@@ -25,7 +25,7 @@ spring:
           uri: https://github.com/changwskr/spring-cloud-config
           # (만약 publiic type이면 username password는 필요없다)
           # username: changwskr
-          # password: !1974yoe0
+          # password: !
           force-pull: true
 
 management:
