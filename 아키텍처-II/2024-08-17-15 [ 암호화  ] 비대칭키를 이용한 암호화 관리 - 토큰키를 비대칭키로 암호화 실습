@@ -1,0 +1,152 @@
+비대칭키를 통해서 암복호화를 한다.
+
+#-----------------------------------------------------------------------------------------------------------------------
+[사전]
+    - 키생성 위치
+        r2022-11-17-spring-cloud-config-repository\keystore
+        apiEncryptionKey.jks
+    - 생성 커맨드 (윈도우 커맨드 라인)
+        keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+        		-dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+        		-keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+        		저장패스워드 : -storepass "1q2w3e4r"
+        		키패스워드  : -keypass "1q2w3e4r"
+        		알고리즘    : -keyalg RSA
+        		인증 주관   : -dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR"
+    - 생성 파일
+        apiEncryptionKey.jks
+
+#-----------------------------------------------------------------------------------------------------------------------
+[spring-config-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+    [bootstrap]
+            encrypt:
+              # 비대칭키를 이용해서 암호화하는 경우
+              # 2022-11-28-3 비대칭 암복호화 용으로 적용
+              key-store:
+                location: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore\apiEncryptionKey.jks
+                password: 1q2w3e4r
+                alias: apiEncryptionKey
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+[native-repository]
+    [ecommerce.yml]
+            encrypt:
+              # 대칭키를 이용해서 암호화하는 경우
+              key: abcdefghijklmnopqrstuvwxyz0123456789
+
+            token:
+              expiration_time: 86400000
+              secret: '{cipher}AQA2UDLKLRGLI7E8xaHogrZMgKRjg/RN0KNq9IYhBe2UsfWCQ7jSVaysPzSJarE8Qb9I03aiT2UNatUhzrnV69V6M0SnHenX+p5iCUGtttw1rMtXE+xa+SWdi39hcjW69m9VpELV13I/3UylHq2XKuoYYPlAxCd4wlFl3kVvTHgeRcHAh/1gNrEl92NVIDGXBFd4yapq+CX7pJeIM95gUYLg6hr3rF9g7ZzIoOvjUHd6cqYpQFJuhEhjO+PDD21cTtli0Rc2SJTJlkOyIvdLQkjjkos8csd+WoZwh18hZJmv3Ddysm9rGAr8xWMjhkz3mh1Fvv3/cWlOrUFEGZkL/ZIvi+gHLJb7QJl9TwCzuqh5jGX0P5HwX++OAB901Ql9OUFvNgURprc3py1nsU/oHmYK'
+
+            gateway:
+              ip: 192.168.0.8
+
+            # [2024-08-17-12,14] 데이타베이스 암호영역으로 config-server를 통해서 인젝션 받는다.
+            spring:
+              datasource:
+                url: jdbc:h2:mem:h6db
+                driver-class-name: org.h2.Driver
+                username: sa
+                password: '{cipher}AQCAuQinB6Sb4UYo+doL95X0jC6Xlgtydcv0BHhqxujHsuMIg7OfRvba/bJeZMOPY3xv0FzWgZhK5WnloBf/+41wd/ByAvK0uZr6nzwsvgvm474W0Uab1xkSDJ8CxYLrYT8AUORD4kcrOivf/JHnzN4sf+8m+VZg1ASiwQacRQHVGedfZ0f9wqn1cyEZa9S6gZAC8GwbKay3s+TF1OmUlZHkfU9+akmhgNbCSBF8Jpqt6LLHZR2bC2RzbLPRsEv5/0Y5Wo0LUquf6+zElFrtLvyoBTAYWInDFnN0B1kRpoB5jWYKQ2skcqGwTwx9R6+tX5Ch8u5PYOK/qk6Stdc3r/ljvFUiKKoShnMs3qGQJY/VjxuF8ZgbfToZZN/yawHTjDc='
+
+#-----------------------------------------------------------------------------------------------------------------------
+[user-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+    [bootstrap]
+            spring:
+              cloud:
+                config:
+                  uri: http://127.0.0.1:8888
+                  # 2022-11-28-2 암복호화 정보를 user-service.yml에서 관리한다.
+                  name: ecommerce
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+[gateway-service]
+    [pom.xml]
+            #-----------------------------------------------------------------------------------------------------------
+    [application.yaml]
+            #-----------------------------------------------------------------------------------------------------------
+    [bootstrap]
+            spring:
+              cloud:
+                config:
+                  uri: http://127.0.0.1:8888
+                  name: ecommerce
+            #-----------------------------------------------------------------------------------------------------------
+    [프로그램]
+            #-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+[테스트]
+   http://127.0.0.1:8888/encrypt
+        user_token_native_ecommerce 이것을 암호화 한다.
+   http://127.0.0.1:8888/decrypt
+
+
+[ecommerce.yaml] 정상적으로 변경되는지 확인
+
+    [실제 저장파일]
+                encrypt:
+                  # 대칭키를 이용해서 암호화하는 경우
+                  key: abcdefghijklmnopqrstuvwxyz0123456789
+
+                token:
+                  expiration_time: 86400000
+    ●             secret: '{cipher}AQCU+hAdud5xNYat9FSGVdixsItesV/qBah4xldlSyzbaDgrSaKQEYFnEYdM2Mwrtk67wKv5LdDcxaa6pe5Hg8qJiLb3LFUQ+ed1QUd/9pMGLdqb5JfSQhJu1whvETwOhfAFsPPsFj52iV/Ynn4AshMKpYLZYvFpsAnRWr79651/ABxEPZR6HxbE6NABKPBd6A88G0p7wSuCkuy2eBe9v2aXXOR6k/Jo4jlZtmqrd5Fu1BFHQxJ3sJpeoZnvGA3LwOKuC5zbwzu9mA/1Fgg5v2hvFT6UM/HJySlHZdz8JYmHM833/rtk0WN70R2UyBfQA8cyI97tqldPe9Um5ZnOdnQCQHoxm7BE2DW1M4pxCiRYW5bv7e2khnDGROlXu94519xEhZwvYije/xErtMUM8/OS'
+
+                gateway:
+                  ip: 192.168.0.8
+
+                # [2024-08-17-12,14] 데이타베이스 암호영역으로 config-server를 통해서 인젝션 받는다.
+                spring:
+                  datasource:
+                    url: jdbc:h2:mem:h6db
+                    driver-class-name: org.h2.Driver
+                    username: sa
+    ●               password: '{cipher}AQCAuQinB6Sb4UYo+doL95X0jC6Xlgtydcv0BHhqxujHsuMIg7OfRvba/bJeZMOPY3xv0FzWgZhK5WnloBf/+41wd/ByAvK0uZr6nzwsvgvm474W0Uab1xkSDJ8CxYLrYT8AUORD4kcrOivf/JHnzN4sf+8m+VZg1ASiwQacRQHVGedfZ0f9wqn1cyEZa9S6gZAC8GwbKay3s+TF1OmUlZHkfU9+akmhgNbCSBF8Jpqt6LLHZR2bC2RzbLPRsEv5/0Y5Wo0LUquf6+zElFrtLvyoBTAYWInDFnN0B1kRpoB5jWYKQ2skcqGwTwx9R6+tX5Ch8u5PYOK/qk6Stdc3r/ljvFUiKKoShnMs3qGQJY/VjxuF8ZgbfToZZN/yawHTjDc='
+
+    [spring-config를 통해 확인된 정보] 두개의 정보가 복호화 되어 있는 것을 알수 있다.
+               http://127.0.0.1:8888/ecommerce/default
+               {
+                   "name": "ecommerce",
+                   "profiles": [
+                       "default"
+                   ],
+                   "label": null,
+                   "version": null,
+                   "state": null,
+                   "propertySources": [
+                       {
+                           "name": "file:C:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-native-repository\\ecommerce.yml",
+                           "source": {
+                               "encrypt.key": "abcdefghijklmnopqrstuvwxyz0123456789",
+                               "token.expiration_time": 86400000,
+                               "gateway.ip": "192.168.0.8",
+                               "spring.datasource.url": "jdbc:h2:mem:h6db",
+                               "spring.datasource.driver-class-name": "org.h2.Driver",
+                               "spring.datasource.username": "sa",
+    ●                          "token.secret": "user_token_native_ecommerce",
+    ●                          "spring.datasource.password": "sa"
+                           }
+                       },
+                       {
+                           "name": "file:C:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-native-repository\\application.yml",
+                           "source": {
+                               "token.expiration_time": 86400000,
+                               "token.secret": "user_token_native_application_changed_2",
+                               "gateway.ip": "192.168.0.8"
+                           }
+                       }
+                   ]
+               }
+
