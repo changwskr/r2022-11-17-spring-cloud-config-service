@@ -1,0 +1,169 @@
+#-----------------------------------------------------------------------------------------------------------------------
+[사전]
+    - 키생성 위치
+        r2022-11-17-spring-cloud-config-repository\keystore
+        apiEncryptionKey.jks
+    - 생성 커맨드 (윈도우 커맨드 라인)
+        keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+        		-dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+        		-keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+        		저장패스워드 : -storepass "1q2w3e4r"
+        		키패스워드  : -keypass "1q2w3e4r"
+        		알고리즘    : -keyalg RSA
+        		인증 주관   : -dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR"
+    - 생성 파일
+        apiEncryptionKey.jks
+    - 생성된 키에 대한 정보를 알아본다.
+              □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+              \keystore> keytool -list -keystore apiEncryptionKey.jks -v
+              Enter keystore password:
+
+              Keystore type: PKCS12
+              Keystore provider: SUN
+
+              Your keystore contains 1 entry
+
+              Alias name: apiencryptionkey
+              Creation date: 2024. 8. 17.
+              Entry type: PrivateKeyEntry (●●●●●●●●● 개인키이다)
+              Certificate chain length: 1
+              Certificate[1]:
+              Owner: CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR
+              Issuer: CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR
+              Serial number: 8dfec99ad998610c
+              Valid from: Sat Aug 17 22:01:44 KST 2024 until: Fri Nov 15 22:01:44 KST 2024
+              Certificate fingerprints:
+                       SHA1: 23:F9:CC:07:55:FA:0D:CF:01:59:89:11:7F:BF:45:76:B0:0D:72:FE
+                       SHA256: EC:3D:0C:99:14:34:02:54:BE:AE:6F:2C:9F:12:EB:35:A0:87:96:E3:CF:AC:57:0B:B4:41:5E:B9:FA:A9:F0:2C
+              Signature algorithm name: SHA256withRSA
+              Subject Public Key Algorithm: 2048-bit RSA key
+              Version: 3
+
+              Extensions:
+
+              #1: ObjectId: 2.5.29.14 Criticality=false
+              SubjectKeyIdentifier [
+              KeyIdentifier [
+              0000: F6 78 53 3E 35 5D 28 25   34 C3 A2 39 2F 02 80 AD  .xS>5](%4..9/...
+              0010: 10 DF 53 16                                        ..S.
+              ]
+              ]
+
+              *******************************************
+              *******************************************
+
+            - 생성된 키를 가지고 공개키를 찾아보자
+              □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+              \keystore> keytool -export -alias apiEncryptionKey -keystore apiEncryptionKey.jks -rfc -file trustServer.cer
+              Certificate stored in file <trustServer.cer>
+
+              trustServer.cer 이 파일이 public key에 해당된다. 이 파일이 바로 인증서가 된다.
+              그래서 이 개인키를 가지고 공개키를 생성가능하다.
+
+            - 그럼 이번에는 이 인증서 공개키 파일을 jks 파일로 바꿀수도 있다.
+              □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+             \keystore> keytool -import -alias trustServer -file trustServer.cer -keystore publicKey.jks
+             Enter keystore password:
+
+             Re-enter new password:
+
+             Owner: CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR
+             Issuer: CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR
+             Serial number: 8dfec99ad998610c
+             Valid from: Sat Aug 17 22:01:44 KST 2024 until: Fri Nov 15 22:01:44 KST 2024
+             Certificate fingerprints:
+                      SHA1: 23:F9:CC:07:55:FA:0D:CF:01:59:89:11:7F:BF:45:76:B0:0D:72:FE
+                      SHA256: EC:3D:0C:99:14:34:02:54:BE:AE:6F:2C:9F:12:EB:35:A0:87:96:E3:CF:AC:57:0B:B4:41:5E:B9:FA:A9:F0:2C
+             Signature algorithm name: SHA256withRSA
+             Subject Public Key Algorithm: 2048-bit RSA key
+             Version: 3
+
+             Extensions:
+
+             #1: ObjectId: 2.5.29.14 Criticality=false
+             SubjectKeyIdentifier [
+             KeyIdentifier [
+             0000: F6 78 53 3E 35 5D 28 25   34 C3 A2 39 2F 02 80 AD  .xS>5](%4..9/...
+             0010: 10 DF 53 16                                        ..S.
+             ]
+             ]
+
+             Trust this certificate? [no]:  yes
+             Certificate was added to keystore
+             PS C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore>
+             PS C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore> ls
+
+                 디렉터리: C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore
+
+             Mode                 LastWriteTime         Length Name
+             ----                 -------------         ------ ----
+             -a----      2024-08-17  오후 10:01           2780 apiEncryptionKey.jks
+             -a----      2024-08-17  오후 11:22           1286 publicKey.jks
+             -a----      2024-08-17  오후 11:15           1290 trustServer.cer
+
+
+            - 그럼 이번에는 이 생성된 두개의 키가 같은 정보를 가지고 있는지 확인해 보자
+              □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+
+            \keystore> keytool -list -keystore publicKey.jks
+            Keystore type: PKCS12
+            Keystore provider: SUN
+
+            Your keystore contains 1 entry
+
+●●●         trustserver, 2024. 8. 17., trustedCertEntry,
+●●●         Certificate fingerprint (SHA-256): EC:3D:0C:99:14:34:02:54:BE:AE:6F:2C:9F:12:EB:35:A0:87:96:E3:CF:AC:57:0B:B4:41:5E:B9:FA:A9:F0:2C
+
+
+            \keystore> keytool -list -keystore apiEncryptionKey.jks
+            Keystore type: PKCS12
+            Keystore provider: SUN
+
+            Your keystore contains 1 entry
+
+○○○         apiencryptionkey, 2024. 8. 17., PrivateKeyEntry, (개인키)
+○○○         Certificate fingerprint (SHA-256): EC:3D:0C:99:14:34:02:54:BE:AE:6F:2C:9F:12:EB:35:A0:87:96:E3:CF:AC:57:0B:B4:41:5E:B9:FA:A9:F0:2C
+
+●●●         trustserver, 2024. 8. 17., trustedCertEntry, (공개키)
+●●●         Certificate fingerprint (SHA-256): EC:3D:0C:99:14:34:02:54:BE:AE:6F:2C:9F:12:EB:35:A0:87:96:E3:CF:AC:57:0B:B4:41:5E:B9:FA:A9:F0:2C
+
+            결론은 하나의 생성된 키 즉 개인키인 apiEncryptionKey.jks 통해서 공개키와 인증서를 다 관리되어진다는 말이다.
+
+            □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
+            PS C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore> ls
+
+                디렉터리: C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore
+
+            Mode                 LastWriteTime         Length Name
+            ----                 -------------         ------ ----
+            -a----      2024-08-17  오후 10:01           2780 apiEncryptionKey.jks 개인키
+            -a----      2024-08-17  오후 11:22           1286 publicKey.jks        공개키
+            -a----      2024-08-17  오후 11:15           1290 trustServer.cer      인증서
+
+
+[암복호화 테스트]
+    bootstap 파일
+            encrypt:
+                  # 비대칭키를 이용해서 암호화하는 경우
+                  # 2022-11-28-3 비대칭 암복호화 용으로 적용
+                  # keystore 정보는 비대칭키를 관리한다는 정보를 의미한다. 여기에는 keytool를 통해 만들어진 키에 대한 정보를 준다.
+                  #  keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+                  #  -dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+                  #  -keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+              key-store:
+                location: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore\apiEncryptionKey.jks
+                password: 1q2w3e4r
+                alias: apiEncryptionKey
+
+    [호출] spring-config-service는 기동시 bootstrap에 명시된 key-store 정보를 보고 대칭키를 사용할 것인지 비대칭을 사용할 것인지 안다.
+        (post) http://127.0.0.1:8888/encrypt
+                roian
+                AQB1s6b2ucviJj+UkJkzURgjOE0+WESF+UCjwiGbU+lPuAl9CgyOKvvUyB6lKD8hrcfhjKBny0SFAVErcj7QFW6ny+lS6l+1q///JyYvgJpBhFmNxDrEo0PseDY/uXxuk+Yj+pL+Za+XX4lnO2kYmUYm1OEnY/BcyzMmAD8akPKiHy4UQ4l7wajEXL5hQQ1/NIYAruhQOwEOEo/AdSHOFypmkucKIcAfC/wnoqeYp5g/NtvUQP1BzQ6rOgmZPzrl7awxAmm9CTD40M2QUIhCQRl+v80vxPT1sAqXVLovhMPAArhNdy/YGZ42/m+DsmoUqB6nX1Ldfy519CS39pHcCj2snlQGHjS3+v08csw0Q4esFOPACkCa8epkF0CUvcIwOvA=
+        (post) http://127.0.0.1:8888/decrypt
+                AQB1s6b2ucviJj+UkJkzURgjOE0+WESF+UCjwiGbU+lPuAl9CgyOKvvUyB6lKD8hrcfhjKBny0SFAVErcj7QFW6ny+lS6l+1q///JyYvgJpBhFmNxDrEo0PseDY/uXxuk+Yj+pL+Za+XX4lnO2kYmUYm1OEnY/BcyzMmAD8akPKiHy4UQ4l7wajEXL5hQQ1/NIYAruhQOwEOEo/AdSHOFypmkucKIcAfC/wnoqeYp5g/NtvUQP1BzQ6rOgmZPzrl7awxAmm9CTD40M2QUIhCQRl+v80vxPT1sAqXVLovhMPAArhNdy/YGZ42/m+DsmoUqB6nX1Ldfy519CS39pHcCj2snlQGHjS3+v08csw0Q4esFOPACkCa8epkF0CUvcIwOvA=
+                roian
+
+
+
+
