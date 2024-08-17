@@ -1,0 +1,16 @@
+
+encrypt:
+ # 대칭키를 이용해서 암호화하는 경우
+ # 2022-11-28-3 비대칭키 적용으로 막음
+  # key: abcdefghijklmnopqrstuvwxyz0123456789
+
+# 비대칭키를 이용해서 암호화하는 경우  
+# 2022-11-28-3 비대칭 암복호화 용으로 적용
+#  key-store:
+#    location: file:///C:\WSJ_EX\01.workspace\2022-11-17-spring-cloud-config-repository\keystore\apiEncryptionKey.jks
+#    password: 1q2w3e4r
+#    alias: apiEncryptionKey
+#
+    
+
+    

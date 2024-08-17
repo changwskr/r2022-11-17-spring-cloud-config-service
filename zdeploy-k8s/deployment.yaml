@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-configservice-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-configservice
+  template:
+    metadata:
+      labels:
+        app: my-configservice
+    spec:
+      containers:
+        - name: my-configservice
+          image: changwskr/my-configservice:latest
+          ports:
+            - containerPort: 8888

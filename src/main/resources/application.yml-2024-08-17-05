@@ -1,0 +1,16 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://c:\Programming(23-08-15)\zRepository\zlogcal-dir
+#          uri: file://c:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-localrepository
+#          uri: https://github.com/changwskr/r2022-11-17-spring-cloud-config-localrepository
+
+
+
+
