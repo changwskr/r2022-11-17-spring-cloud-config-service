@@ -1,0 +1,42 @@
+#-----------------------------------------------------------------------------------------------------------------------
+[main source]
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServiceApplication.class, args);
+    }
+}
+#-----------------------------------------------------------------------------------------------------------------------
+[application.yml]
+server:
+  port: 8888
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://c:\Programming(23-08-15)\zRepository\zlogcal-dir
+#-----------------------------------------------------------------------------------------------------------------------
+[제일 중요한 내용]
+local directory를 생성하여 만들때는 git init,  git add 까지만 한다. git push를 하면 spring-config가 remote에 접근하려 하기 때문이다.
+C:\Programming(23-08-15)\zRepository
+다시 말하지만 git push 하면 안된다. 하면 에라가 난다.
+#-----------------------------------------------------------------------------------------------------------------------
+[실행]
+http://localhost:8888/ecommerce.yml/default
+{
+    "name": "ecommerce.yml",
+    "profiles": [
+        "default"
+    ],
+    "label": null,
+    "version": "bfbbdf470ab6a288579da7b93e00196c275c048a",
+    "state": null,
+    "propertySources": []
+}
+#-----------------------------------------------------------------------------------------------------------------------
+
