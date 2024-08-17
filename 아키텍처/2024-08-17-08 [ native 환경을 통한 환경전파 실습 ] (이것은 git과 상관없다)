@@ -50,3 +50,36 @@ ecommerce.yaml, ecommerce-dev.yaml, ecommerce-prod.yaml ecommerce-uat.yaml 이�
 	http://127.0.0.1:8888/ecommerce/prod
 	http://127.0.0.1:8888/application/default
 	http://127.0.0.1:8888/user-service/native
+	http://127.0.0.1:8888/ecommerce/native
+
+● 파일예시
+user-service-dev.yaml
+user-service-prod.yaml
+user-service-uat.yaml
+user-service.yaml
+
+● http://127.0.0.1:8888/user_service/default
+{
+    "name": "user_service",
+    "profiles": [
+        "default"
+    ],
+    "label": null,
+    "version": null,
+    "state": null,
+    "propertySources": [
+        {
+            "name": "file:C:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-native-repository\\application.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token_native_application",
+                "gateway.ip": "192.168.0.8"
+            }
+        }
+    ]
+}
+● http://127.0.0.1:8888/user-service-dev/default
+●
+
+
+●
