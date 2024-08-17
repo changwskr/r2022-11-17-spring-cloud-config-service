@@ -30,7 +30,7 @@ ecommerce.yaml, ecommerce-dev.yaml, ecommerce-prod.yaml ecommerce-uat.yaml 이�
             config:
               server:
                 native:
-                  search-locations: c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
+                  search-locations: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
                 git:
                   # (local 디렉토리 활용-단 git push 하면 안됨)
                   # uri: file://c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
@@ -43,73 +43,10 @@ ecommerce.yaml, ecommerce-dev.yaml, ecommerce-prod.yaml ecommerce-uat.yaml 이�
 #-----------------------------------------------------------------------------------------------------------------------
 [실행] spring-config-service 가 정상 기동하고 다음의 url를 호출해본다.
 
-http://localhost:8888/ecommerce/default
-{
-    "name": "ecommerce",
-    "profiles": [
-        "default"
-    ],
-    "label": null,
-    "version": "60bbfd319538d5304e87eb191ed5d5cac4238864",
-    "state": null,
-    "propertySources": [
-        {
-            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce.yml",
-            "source": {
-                "token.expiration_time": 86400000,
-                "token.secret": "user_token",
-                "gateway.ip": "127.0.0.1"
-            }
-        },
-        {
-            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\application.yml",
-            "source": {
-                "token.expiration_time": 86400000,
-                "token.secret": "user_token",
-                "gateway.ip": "127.0.0.1"
-            }
-        }
-    ]
-}
-
-
-
-
-http://localhost:8888/ecommerce/dev
-{
-    "name": "ecommerce",
-    "profiles": [
-        "dev"
-    ],
-    "label": null,
-    "version": "60bbfd319538d5304e87eb191ed5d5cac4238864",
-    "state": null,
-    "propertySources": [
-        {
-            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce-dev.yml",
-            "source": {
-                "token.expiration_time": 86400000,
-                "token.secret": "user_token_dev",
-                "gateway.ip": "127.0.0.1"
-            }
-        },
-        {
-            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce.yml",
-            "source": {
-                "token.expiration_time": 86400000,
-                "token.secret": "user_token",
-                "gateway.ip": "127.0.0.1"
-            }
-        },
-        {
-            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\application.yml",
-            "source": {
-                "token.expiration_time": 86400000,
-                "token.secret": "user_token",
-                "gateway.ip": "127.0.0.1"
-            }
-        }
-    ]
-}
-
-http://localhost:8888/ecommerce/prod
+● 테스트
+	http://127.0.0.1:8888/user-service/default
+	http://127.0.0.1:8888/ecommerce/default
+	http://127.0.0.1:8888/ecommerce/dev
+	http://127.0.0.1:8888/ecommerce/prod
+	http://127.0.0.1:8888/application/default
+	http://127.0.0.1:8888/user-service/native
