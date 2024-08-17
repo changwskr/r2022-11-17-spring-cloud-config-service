@@ -1,0 +1,61 @@
+#----------------------------------------------------------------------------------------------------------------------
+[사전환경]
+    user-uservice
+        [bootstrap]
+            spring:
+              cloud:
+                config:
+                  uri: http://127.0.0.1:8888
+                  name: config-service   # config-service를 호출한다는 것은 application.yaml을 불러들인다는 말이다.
+    api-gateway-service
+        [bootstrap]
+            spring:
+              cloud:
+                config:
+                  uri: http://127.0.0.1:8888
+                  name: config-service   # config-service를 호출한다는 것은 application.yaml을 불러들인다는 말이다.
+    config-service
+        [application.yaml]
+            spring:
+              profiles:
+                active: native
+              cloud:
+                config:
+                  server:
+                    native:
+                      search-locations: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
+                    git:
+                      uri: https://github.com/changwskr/spring-cloud-config
+    native-repository
+        [dir] C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
+            application.yaml
+#----------------------------------------------------------------------------------------------------------------------
+[1] config-service 가 무슨 환경을 제공한는 지확인
+    http://127.0.0.1:8888/config-service/default
+        {
+            "name": "config-service",
+            "profiles": [
+                "default"
+            ],
+            "label": null,
+            "version": null,
+            "state": null,
+            "propertySources": [
+                {
+                    "name": "file:C:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-native-repository\\application.yml",
+                    "source": {
+                        "token.expiration_time": 86400000,
+                        "token.secret": "user_token_native_application_changed_2",
+                        "gateway.ip": "192.168.0.8"
+                    }
+                }
+            ]
+        }
+
+[2] 테스트 절차
+    - 가입
+    - 로그인
+    - 헬스체크
+    - native-repository/application/token 변경
+    - 가입자목록 - 에러
+    - 환경전파-http://localhost:8000/actuator/busrefresh

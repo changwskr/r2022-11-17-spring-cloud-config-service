@@ -34,11 +34,14 @@ rabbitMQ 설치
             			<groupId>org.springframework.boot</groupId>
             			<artifactId>spring-boot-starter-actuator</artifactId>
             		</dependency>
-
             		<dependency>
             			<groupId>org.springframework.cloud</groupId>
             			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
             		</dependency>
+                    <dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                    </dependency>
             #-----------------------------------------------------------------------------------------------------------
     [application.yaml]
             #-----------------------------------------------------------------------------------------------------------
@@ -58,6 +61,9 @@ rabbitMQ 설치
                       exposure:
                         include: health, busrefresh, beans, httptrace, busrefresh
 
+            #-----------------------------------------------------------------------------------------------------------
+    [bootstrap]
+            #-----------------------------------------------------------------------------------------------------------
             #-----------------------------------------------------------------------------------------------------------
     [프로그램]
             #-----------------------------------------------------------------------------------------------------------
@@ -66,11 +72,18 @@ rabbitMQ 설치
 [user-service]
     [pom.xml]
             #-----------------------------------------------------------------------------------------------------------
+            		<dependency>
+            			<groupId>org.springframework.boot</groupId>
+            			<artifactId>spring-boot-starter-actuator</artifactId>
+            		</dependency>
+            		<dependency>
+            			<groupId>org.springframework.cloud</groupId>
+            			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            		</dependency>
                     <dependency>
                         <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-starter-bus-amqp</artifactId>
-                    </dependency>
-            #-----------------------------------------------------------------------------------------------------------
+                        <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                    </dependency>            #-----------------------------------------------------------------------------------------------------------
     [application.yaml]
             #-----------------------------------------------------------------------------------------------------------
               spring:
@@ -89,16 +102,42 @@ rabbitMQ 설치
                       exposure:
                         include: health, busrefresh, beans, httptrace, busrefresh
             #-----------------------------------------------------------------------------------------------------------
+    [bootstrap]
+            #-----------------------------------------------------------------------------------------------------------
+                    spring:
+                      cloud:
+                        config:
+                          uri: http://127.0.0.1:8888
+                          name: config-service
+                          # -------------------------------------------------------------------------------------------
+                          # user-service 는 config-service를 통해서 다음과 같은 서비스를 제공받는다.
+                          # config-service 라는 말은 config-service는 표준 파일을 읽을 것이다.
+                          # C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository>
+                          # 하위의 application.yaml 파일을 읽는다는 말이다.
+                          # token:
+                          #   expiration_time: 86400000
+                          #   secret: user_token_native_application
+                          # gateway:
+                          #   ip: 192.168.0.8
+            #-----------------------------------------------------------------------------------------------------------
     [프로그램]
             #-----------------------------------------------------------------------------------------------------------
             #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-[gateway-service
+[gateway-service]
     [pom.xml]
             #-----------------------------------------------------------------------------------------------------------
+            		<dependency>
+            			<groupId>org.springframework.boot</groupId>
+            			<artifactId>spring-boot-starter-actuator</artifactId>
+            		</dependency>
+            		<dependency>
+            			<groupId>org.springframework.cloud</groupId>
+            			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            		</dependency>
                     <dependency>
                         <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+                        <artifactId>spring-cloud-starter-bootstrap</artifactId>
                     </dependency>
             #-----------------------------------------------------------------------------------------------------------
     [application.yaml]
@@ -123,4 +162,13 @@ rabbitMQ 설치
             #-----------------------------------------------------------------------------------------------------------
             #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
+
+[실행]
+c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://127.0.0.1:8888
+2: Located environment:
+            name=config-service,
+            profiles=[default], label=null, version=null, state=null
+2: Located property source: [BootstrapPropertySource {name='bootstrapProperties-configClient'},
+    BootstrapPropertySource {
+        name='bootstrapProperties-file:C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository\application.yml'}]
 
