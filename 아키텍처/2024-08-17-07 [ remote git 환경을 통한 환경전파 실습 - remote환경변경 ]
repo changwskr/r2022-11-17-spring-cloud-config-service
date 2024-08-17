@@ -1,0 +1,110 @@
+지금까진 로컬디렉토리 C:\Programming(23-08-15)\zRepository\zlogcal-dir
+ecommerce.yaml, ecommerce-dev.yaml, ecommerce-prod.yaml ecommerce-uat.yaml 이용했다.
+
+이 정보는 spring-config-service의 application.yaml 정보에 명시되어 사용되어져 왔다.
+        spring:
+          application:
+            name: config-service
+          cloud:
+            config:
+              server:
+                git:
+                  uri: file://c:\Programming(23-08-15)\zRepository\zlogcal-dir
+
+지금부턴 이정보를 remote git에 저장하고 이용하는 방법에 대해서 알아보자
+
+리모트로 환경 변경 절차
+#-----------------------------------------------------------------------------------------------------------------------
+[spring-config-service] 08-17-07
+    [application.yaml] 수정
+        server:
+          port: 8888
+        spring:
+          application:
+            name: config-service
+          cloud:
+            config:
+              server:
+                native:
+                  search-locations: file://c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
+                git:
+                  # (local 디렉토리 활용-단 git push 하면 안됨)
+                  # uri: file://c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
+                  uri: https://github.com/changwskr/spring-cloud-config
+                  # (만약 publiic type이면 username password는 필요없다)
+                  # username: changwskr
+                  # password: !1974yoe0
+                  force-pull: true
+#-----------------------------------------------------------------------------------------------------------------------
+[실행] spring-config-service 가 정상 기동하고 다음의 url를 호출해본다.
+
+http://localhost:8888/ecommerce/default
+{
+    "name": "ecommerce",
+    "profiles": [
+        "default"
+    ],
+    "label": null,
+    "version": "60bbfd319538d5304e87eb191ed5d5cac4238864",
+    "state": null,
+    "propertySources": [
+        {
+            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token",
+                "gateway.ip": "127.0.0.1"
+            }
+        },
+        {
+            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\application.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token",
+                "gateway.ip": "127.0.0.1"
+            }
+        }
+    ]
+}
+
+
+
+
+http://localhost:8888/ecommerce/dev
+{
+    "name": "ecommerce",
+    "profiles": [
+        "dev"
+    ],
+    "label": null,
+    "version": "60bbfd319538d5304e87eb191ed5d5cac4238864",
+    "state": null,
+    "propertySources": [
+        {
+            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce-dev.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token_dev",
+                "gateway.ip": "127.0.0.1"
+            }
+        },
+        {
+            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\ecommerce.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token",
+                "gateway.ip": "127.0.0.1"
+            }
+        },
+        {
+            "name": "https://github.com/changwskr/spring-cloud-config/file:C:\\Users\\chang\\AppData\\Local\\Temp\\config-repo-9682802141974171001\\application.yml",
+            "source": {
+                "token.expiration_time": 86400000,
+                "token.secret": "user_token",
+                "gateway.ip": "127.0.0.1"
+            }
+        }
+    ]
+}
+
+http://localhost:8888/ecommerce/prod
