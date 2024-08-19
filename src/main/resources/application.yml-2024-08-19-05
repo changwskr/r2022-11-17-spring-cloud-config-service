@@ -1,0 +1,37 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-service
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+  profiles:
+    active: native
+    # active: git
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
+        git:
+          # (local 디렉토리 활용-단 git push 하면 안됨)
+          # uri: file://c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
+          uri: https://github.com/changwskr/spring-cloud-config
+          # (만약 publiic type이면 username password는 필요없다)
+          # username: changwskr
+          # password:
+          force-pull: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh, beans, httptrace, busrefresh
+
+
