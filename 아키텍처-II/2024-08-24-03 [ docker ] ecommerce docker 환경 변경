@@ -27,7 +27,27 @@ docker bridge network
 #-----------------------------------------------------------------------------------------------------------------------
 [config-service]
     □ application.yml
+      config-service는 현재 window rabbitmq를 사용하고 있다. 이것을 도커 컨테이너서버로 변경한다.
+      docker network inspect ecommerce-network를 통해서 직접 rabbitmq ip로 변경해도 되나, 실행커맨드라인에서 해도 된다.
+      rabbitmq 컨테이너이름으로 변경한다.
+        ----------------------------------------------------------------------------------------------------------------
+        type1:application.yaml 수정
+            spring
+              rabbitmq:
+                host: 172.17.0.2
+                port: 5672
+        ---------------------------------------------------------------------------------------------------------------- or
+        type2: config-service 실행커맨드에서 rabbitmq서버 지정
+            docker run -d -p 8888:8888 --network ecommerce-network ^
+                -e "spring.rabbitmq.host=rabbitmq" ^    ◀ ■■■
+                -e "spring.profiles.active=default" ^
+                --name my-configservice changwskr/my-configservice:1.0
+
+        이렇게 사용하면 application.yaml 수정없이 사용가능하다.
+
+
     □ bootstrap.yml 2024-08-24-03
+      지난 버전은 윈도우를 기준으로 환경이 구성되어져 있다. 도커 컨테이너로 변경하기 위해 jks 파일위치를 바꾸어 준다. location: file:/apiEncryptionKey.jks
         ----------------------------------------------------------------------------------------------------------------
         encrypt:
               # 비대칭키를 이용해서 암호화하는 경우

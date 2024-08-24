@@ -1,0 +1,13 @@
+ecommerce architecture
+#-----------------------------------------------------------------------------------------------------------------------
+[아키텍처]
+                               Service registry(유레카)                            ◆ ----- Distributed tracing(Zipkin)
+channel                           |                                               |
+Iot                               |                                               |
+Mobile    ---- API gateway -------| -------------------- USER-SERVICE ------------◆
+Browser            |              | -------------------- ORDER-SERVICE -----------◆
+                   |              | -------------------- CATALOG-SERVICE ---------◆
+                   |              |                                               |
+                   ◆---------- Config Service                                     |
+                                  |                                               |
+                                  ◆---------------------Bus(Rabbitmq)-------------◆

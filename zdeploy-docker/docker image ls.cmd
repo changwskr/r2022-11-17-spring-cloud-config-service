@@ -1,0 +1,1 @@
+docker image ls changwskr/my-config-service:1.0
