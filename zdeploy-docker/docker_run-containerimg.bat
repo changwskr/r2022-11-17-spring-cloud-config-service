@@ -5,5 +5,3 @@ docker run -d -p 8888:8888 --network ecommerce-network ^
     -e "spring.rabbitmq.host=rabbitmq" ^
     -e "spring.profiles.active=default" ^
     --name my-configservice changwskr/my-configservice:1.0
-
-docker ps | findstr my-configservice
