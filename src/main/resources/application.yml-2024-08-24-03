@@ -11,8 +11,12 @@ spring:
     password: guest
 
   profiles:
-    active: native
-    # active: git
+    # 2024-08-24-03 도커환경으로 변경으로 인한 위치 변경
+    # ---
+    # old
+    # active: native
+    # new
+    active: git
 
   cloud:
     config:
@@ -20,9 +24,15 @@ spring:
         native:
           search-locations: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
         git:
-          # (local 디렉토리 활용-단 git push 하면 안됨)
+          #------------------------------------------------------------------------------------------------------------
+          # tpye -1 local 사용시
+          #   type1 사용시 주의할 점은 local 디렉토리 활용-단 git push 하면 안됨
           # uri: file://c:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-localrepository
-          uri: https://github.com/changwskr/spring-cloud-config
+
+          #------------------------------------------------------------------------------------------------------------
+          # type -2 git 사용시
+          #uri: https://github.com/changwskr/spring-cloud-config
+          uri: https://github.com/changwskr/r2022-11-17-spring-cloud-config-repository.git
           # (만약 publiic type이면 username password는 필요없다)
           # username: changwskr
           # password:
