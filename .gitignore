@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+!/zdeploy-docker/config-service-1.0.jar
+!/zdeploy-docker/config-service-1.0.jar
+!/.gitignore
