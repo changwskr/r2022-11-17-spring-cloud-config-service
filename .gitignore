@@ -34,3 +34,4 @@ build/
 !/zdeploy-docker/config-service-1.0.jar
 !/zdeploy-docker/config-service-1.0.jar
 !/.gitignore
+!/zdeploy-docker/config-service-1.0.jar

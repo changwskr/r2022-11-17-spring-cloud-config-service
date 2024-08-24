@@ -46,6 +46,9 @@ docker bridge network
         이렇게 사용하면 application.yaml 수정없이 사용가능하다.
 
     □ application.yml - profile
+        ■■■■■■■ 꼭 해야 될 사항 ■■■■■■■
+        만약 r2022-11-17-spring-cloud-config-repository.git 레파지토리가 private로 선언되어 있으면 public으로 한다.
+        현재 접근 방식이 id/pw 없이 하기 때문이다.
         ----------------------------------------------------------------------------------------------------------------
         spring:
           profiles:

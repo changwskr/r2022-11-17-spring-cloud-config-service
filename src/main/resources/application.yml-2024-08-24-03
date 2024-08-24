@@ -31,8 +31,8 @@ spring:
 
           #------------------------------------------------------------------------------------------------------------
           # type -2 git 사용시
-          #uri: https://github.com/changwskr/spring-cloud-config
-          uri: https://github.com/changwskr/r2022-11-17-spring-cloud-config-repository.git
+          uri: https://github.com/changwskr/spring-cloud-config
+          # uri: https://github.com/changwskr/r2022-11-17-spring-cloud-config-repository.git
           # (만약 publiic type이면 username password는 필요없다)
           # username: changwskr
           # password:
