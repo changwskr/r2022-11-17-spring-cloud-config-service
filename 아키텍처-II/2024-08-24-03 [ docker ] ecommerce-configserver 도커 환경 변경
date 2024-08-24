@@ -85,12 +85,9 @@ docker bridge network
             password: 1q2w3e4r
             alias: apiEncryptionKey
 
-    □
-
-
-
-
-
-
-
-
+#-----------------------------------------------------------------------------------------------------------------------
+[확인]
+    - config-service
+        http://localhost:8888/ecommerce/default
+        http://localhost:8888/user-service/default
+        ......
