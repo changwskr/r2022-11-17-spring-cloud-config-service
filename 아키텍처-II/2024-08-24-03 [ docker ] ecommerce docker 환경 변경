@@ -26,7 +26,7 @@ docker bridge network
 
 #-----------------------------------------------------------------------------------------------------------------------
 [config-service]
-    □ application.yml
+    □ application.yml - rabbit
       config-service는 현재 window rabbitmq를 사용하고 있다. 이것을 도커 컨테이너서버로 변경한다.
       docker network inspect ecommerce-network를 통해서 직접 rabbitmq ip로 변경해도 되나, 실행커맨드라인에서 해도 된다.
       rabbitmq 컨테이너이름으로 변경한다.
@@ -45,6 +45,19 @@ docker bridge network
 
         이렇게 사용하면 application.yaml 수정없이 사용가능하다.
 
+    □ application.yml - profile
+        ----------------------------------------------------------------------------------------------------------------
+        spring:
+          profiles:
+            active: git  ◀ ■■■
+          cloud:
+            config:
+              server:
+                native:
+                  search-locations: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-native-repository
+                git: ◀ ■■■
+                  uri: https://github.com/changwskr/r2022-11-17-spring-cloud-config-repository.git   ◀ ■■■
+                  force-pull: true
 
     □ bootstrap.yml 2024-08-24-03
       지난 버전은 윈도우를 기준으로 환경이 구성되어져 있다. 도커 컨테이너로 변경하기 위해 jks 파일위치를 바꾸어 준다. location: file:/apiEncryptionKey.jks
