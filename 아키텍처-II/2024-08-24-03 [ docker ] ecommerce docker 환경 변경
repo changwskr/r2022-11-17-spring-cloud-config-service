@@ -27,5 +27,34 @@ docker bridge network
 #-----------------------------------------------------------------------------------------------------------------------
 [config-service]
     □ application.yml
+    □ bootstrap.yml 2024-08-24-03
+        ----------------------------------------------------------------------------------------------------------------
+        encrypt:
+              # 비대칭키를 이용해서 암호화하는 경우
+              # 2022-11-28-3 비대칭 암복호화 용으로 적용
+              # keystore 정보는 비대칭키를 관리한다는 정보를 의미한다. 여기에는 keytool를 통해 만들어진 키에 대한 정보를 준다.
+              #  keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+              #  -dname "CN=Kenneth Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+              #  -keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+          key-store:
+
+            # location 변경이력
+            # 2024-08-24-03 config-service를 도커 컨테이너로 변경으로 인해 위치 변경한다.
+            # old
+            # location: file:///C:\Programming(23-08-15)\zRepository\r2022-11-17-spring-cloud-config-service\keystore\apiEncryptionKey.jks
+            #---
+            # new 2024-08-24-03
+            location: file:/apiEncryptionKey.jks
+
+            password: 1q2w3e4r
+            alias: apiEncryptionKey
+
+    □
+
+
+
+
+
+
 
 
