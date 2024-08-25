@@ -1,1 +1,1 @@
-docker stop my-configservice
+docker stop config-service
