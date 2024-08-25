@@ -1,5 +1,1 @@
-java -Dspring.profiles.active=native .\target\config-service-1.0.jar
-
-java -jar .\target\config-service-1.0.jar --spring.profiles.active=native
-
-mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=native
+java -jar .\target\config-service-1.0.jar --spring.profiles.active=native --encrypt.key-store.location="file:///C:\\Programming(23-08-15)\\zRepository\\r2022-11-17-spring-cloud-config-service\\keystore\\apiEncryptionKey.jks"
