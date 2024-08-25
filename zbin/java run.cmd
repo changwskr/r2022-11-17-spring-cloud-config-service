@@ -1,0 +1,1 @@
+java -Dspring.profiles.active=default xxx.jar

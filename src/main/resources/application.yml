@@ -16,7 +16,7 @@ spring:
     # old
     # active: native
     # new
-    active: git
+     active: git
 
   cloud:
     config:
