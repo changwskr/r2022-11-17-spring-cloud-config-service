@@ -1,1 +1,1 @@
-mvn spring-boot:run -Dspring-boot.run.arguements=--spring.profiles.active=native
+mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=native
